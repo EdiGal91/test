@@ -3,7 +3,10 @@ const { DATABASE_URL } = require('./config');
 const sequelize = new Sequelize(DATABASE_URL, {
     dialect: 'postgres',
     dialectOptions: {
-        ssl: true
+        ssl: {
+            require: true,
+            rejectUnauthorized: false,
+        }
     }
 });
 
