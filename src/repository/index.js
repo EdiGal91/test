@@ -1,3 +1,12 @@
 const { Sequelize } = require('sequelize');
-const 
-const sequelize = new Sequelize('postgres://user:pass@example.com:5432/dbname') // Example for postgres
+const { DATABASE_URL } = require('./config');
+const sequelize = new Sequelize(DATABASE_URL, {
+    dialect: 'postgres',
+    dialectOptions: {
+        ssl: true
+    }
+});
+
+module.exports.connect = async function () {
+    await sequelize.authenticate();
+}

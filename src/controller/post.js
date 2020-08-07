@@ -1,4 +1,4 @@
-const postService = require('../src/service/post')
+const postService = require('../service/post')
 
 async function getAllPosts(req, res) {
     const posts = await postService.getAllPosts()
