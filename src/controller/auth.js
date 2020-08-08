@@ -5,7 +5,7 @@ exports.login = async function (req, res) {
     const { email, password } = req.body
     const result = await authService.login(email, password)
 
-    if(!result) return res.sendStatus(400)
+    if(!result) return res.redirect(`/login?to=${req.url}`)
 
     res.json(result)
 }
