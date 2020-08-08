@@ -9,7 +9,8 @@ exports.createUser = async function (username, email, password) {
     const user = new User({ username, email })
     user.setPassword(password)
     await user.save()
-    return user
+    const token = await user.generateAuthToken()
+    return { user, token }
 }
 
 exports.deleteAll = async function () {
@@ -18,6 +19,11 @@ exports.deleteAll = async function () {
 }
 
 exports.getUserByEmail = async function (email) {
-    const user = await User.findOne({email})
+    const user = await User.findOne({ email })
+    return user
+}
+
+exports.getUserByToken = async function (_id, token) {
+    const user = await User.findOne({ _id, 'tokens.token': token })
     return user
 }

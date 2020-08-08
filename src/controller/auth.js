@@ -3,11 +3,11 @@ const userService = require('../service/user')
 
 exports.login = async function (req, res) {
     const { email, password } = req.body
-    const isLoggedIn = await authService.login(email, password)
+    const result = await authService.login(email, password)
 
-    if(!isLoggedIn) return res.sendStatus(400)
+    if(!result) return res.sendStatus(400)
 
-    res.json({isLoggedIn})
+    res.json(result)
 }
 
 exports.signup = async function(req, res) {

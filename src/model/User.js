@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 const crypto = require('crypto');
+const jwt = require('jsonwebtoken')
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -43,5 +44,13 @@ userSchema.methods.validatePassword = function (password) {
     const isValidPassword = this.hash === hash
     return isValidPassword;
 };
+
+userSchema.methods.generateAuthToken = async function() {
+    const user = this
+    const token = jwt.sign({_id: user._id}, process.env.JWT_KEY)
+    user.tokens = user.tokens.concat({token})
+    await user.save()
+    return token
+}
 
 module.exports = mongoose.model('User', userSchema);
