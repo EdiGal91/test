@@ -5,7 +5,7 @@ exports.login = async function (req, res) {
     const { email, password } = req.body
     const result = await authService.login(email, password)
 
-    if(!result) return res.redirect(`/login?to=${req.url}`)
+    if(!result) return res.sendStatus(400)
 
     res.json(result)
 }
@@ -21,3 +21,6 @@ exports.signup = async function(req, res) {
     }
 }
 
+exports.getlogin = function(req, res) {
+    res.send(`<form><input placeholder='email'/></form>`)
+}

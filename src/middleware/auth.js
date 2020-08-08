@@ -5,10 +5,10 @@ const { getUserByToken } = require('../service/user')
 
 exports.auth = async function (req, res, next) {
     const token = req.header('Authorization')?.replace('Bearer ', '')
-    if(!token) return res.sendStatus(401)
+    if(!token) return res.redirect(`/login?to=${req.originalUrl}`)
     const data = jwt.verify(token, JWT_KEY)
     const user = await getUserByToken(data._id, token)
-    if(!user) return res.sendStatus(401)
+    if(!user) return res.redirect(`/login?to=${req.originalUrl}`)
 
     req.user = user
     req.token = token
