@@ -10,7 +10,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 const routes = require('./src/routes')
-const { connect: connectToDB } = require('./src/repository')
+const { connect: connectToDB } = require('./src/database')
 
 
 app.get('/', (req, res) => {
