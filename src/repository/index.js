@@ -1,15 +1,20 @@
-const { Sequelize } = require('sequelize');
-const { DATABASE_URL } = require('./config');
-const sequelize = new Sequelize(DATABASE_URL, {
-    dialect: 'postgres',
-    dialectOptions: {
-        ssl: {
-            require: true,
-            rejectUnauthorized: false,
-        }
-    }
-});
+const mongoose = require('mongoose');
+const { DATABASE_URL } = require('../config');
 
-module.exports.connect = async function () {
-    await sequelize.authenticate();
+exports.connect = async function () {
+    await mongoose.connect(DATABASE_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true
+    }).catch(err => console.error(err));
+    
+    const isConnected = mongoose.connection.readyState === 1;
+    return isConnected;
 }
+
+process.on('SIGINT', function () {
+    mongoose.connection.close(function () {
+        console.log('connection disconnected through app termination');
+        process.exit(0);
+    });
+}); 

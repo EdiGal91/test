@@ -1,8 +1,11 @@
 const userService = require('../service/user')
 
-async function getAllUsers(req, res) {
+exports.getAllUsers = async function(req, res) {
     const users = await userService.getAllUsers()
     res.json(users)
 }
 
-module.exports.getAllUsers = getAllUsers
+exports.deleteAll = async function(req, res) {
+    const result = await userService.deleteAll()
+    res.json(result)
+}

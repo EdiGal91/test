@@ -1,8 +1,23 @@
-const axios = require('axios')
+const User = require('../model/User')
 
-async function getAllUsers() {
-    const { data: users } = await axios.get('https://jsonplaceholder.typicode.com/users')
+exports.getAllUsers = async function () {
+    const users = await User.find()
     return users
 }
 
-module.exports.getAllUsers = getAllUsers
+exports.createUser = async function (username, email, password) {
+    const user = new User({ username, email })
+    user.setPassword(password)
+    await user.save()
+    return user
+}
+
+exports.deleteAll = async function () {
+    const result = await User.deleteMany()
+    return result
+}
+
+exports.getUserByEmail = async function (email) {
+    const user = await User.findOne({email})
+    return user
+}

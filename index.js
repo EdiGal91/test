@@ -1,9 +1,17 @@
 require('dotenv').config()
 const express = require('express')
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const { PORT } = require('./src/config')
+
+const app = express()
+
+app.use(cors());
+app.use(bodyParser.json());
+
 const routes = require('./src/routes')
 const { connect: connectToDB } = require('./src/repository')
 
-const app = express()
 
 app.get('/', (req, res) => {
     res.send('ok')
@@ -11,10 +19,10 @@ app.get('/', (req, res) => {
 
 app.use('/api', routes)
 
-function startServer(result) {
-    console.log('result:', result)
-    const { PORT: port = 3001 } = process.env
-    app.listen(port, console.log('Server running'))
+function startServer(isConnectedToDB) {
+    if(!isConnectedToDB) return console.error('Failed to connected to DB.\nStopping Server.')
+    console.log('Connected to DB')
+    app.listen(PORT, console.log(`Server running on port ${PORT}`))
 }
 
 connectToDB()
